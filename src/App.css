@@ -1,0 +1,13 @@
+.Minimum-height{
+    height: 90vh;
+    min-height: 800px;
+}
+.Minimum-height2{
+    min-height: 600px;
+}
+.Minimum-height3{
+    min-height: 800px;
+}
+.slick-prev, .slick-next{
+    display: none !important;
+}
