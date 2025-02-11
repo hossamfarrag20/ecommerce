@@ -163,3 +163,11 @@
 .preloader__text {
   width: 500px;
 }
+.dark {
+  .slick-dots li button:before {
+    color: white !important;
+  }
+}
+.slick-dots li button:before {
+  color: black !important;
+}

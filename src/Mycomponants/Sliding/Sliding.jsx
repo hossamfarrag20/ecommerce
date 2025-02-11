@@ -18,10 +18,11 @@ export default function Sliding() {
     speed: 500,
     slidesToShow: 1,
     slidesToScroll: 1,
+    // dotsClass: "hgfg",
   };
   return (
     <>
-      <div className="overflow-hidden flex h-[430px]">
+      <div className="overflow-hidden flex h-[430px] dark:bg-gray-800">
         <div className="w-[70%]">
           <Slider {...settings} autoplay>
             <div className="  ">

@@ -9,7 +9,6 @@ export default function Layout() {
     <>
       <NavigationBar />
       <Outlet />
-      <CartStyle />
       <Footer />
     </>
   );

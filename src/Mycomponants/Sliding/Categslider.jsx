@@ -77,7 +77,7 @@ export default function Categslider() {
   };
   return (
     <>
-      <div className="overflow-hidden my-[40px]">
+      <div className="overflow-hidden py-[40px] dark:bg-gray-800">
         <div className="w-full">
           {allCategories ? (
             <div className="h-[430px]">

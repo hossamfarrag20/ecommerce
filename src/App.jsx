@@ -19,6 +19,10 @@ import ProductDetails from "./Mycomponants/Productdetails/ProductDetails";
 import Cartprovider from "./context/Cartprovider";
 import CartPage from "./Mycomponants/CartPage/CartPage";
 import Ordering from "./Mycomponants/ordering/ordering";
+import { Toaster } from "react-hot-toast";
+import { Offline } from "react-detect-offline";
+import MyModal from "./Mycomponants/Modal/Modal";
+import ModaProvider from "./context/Modalprovider";
 
 const router = createHashRouter([
   {
@@ -47,8 +51,9 @@ const router = createHashRouter([
         ),
       },
       { path: "productdetails/:id", element: <ProductDetails /> },
-      {path: 'cart', element: <CartPage />},
-      {path: 'order', element: <Ordering />},
+      { path: "cart", element: <CartPage /> },
+      { path: "order", element: <Ordering /> },
+      { path: "modal", element: <MyModal /> },
     ],
   },
 ]);
@@ -59,12 +64,16 @@ function App() {
   return (
     <>
       <QueryClientProvider client={theClient}>
-        <Authprovider>
-          <Cartprovider>
-            <RouterProvider router={router} />
-          </Cartprovider>
-        </Authprovider>
+        <ModaProvider>
+          <Authprovider>
+            <Cartprovider>
+              <RouterProvider router={router} />
+            </Cartprovider>
+          </Authprovider>
+        </ModaProvider>
       </QueryClientProvider>
+      <Toaster />
+      <Offline>Only shown offline (surprise!)</Offline>
     </>
   );
 }

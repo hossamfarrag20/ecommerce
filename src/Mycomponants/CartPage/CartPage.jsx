@@ -2,6 +2,8 @@ import React, { useContext } from "react";
 import { cartContext } from "../../context/Cartprovider";
 import Loadingpage from "../Loadingpage/Loadingpage";
 import { Link } from "react-router-dom";
+import toast from "react-hot-toast";
+import CartStyle from "../Cartstyle/CartStyle";
 
 export default function CartPage() {
   const { totalCartPrice, products, updatecart, removeItemFromCart } =
@@ -10,9 +12,18 @@ export default function CartPage() {
   if (!products) {
     return <Loadingpage />;
   }
-  function changeCount(id, newData) {
-    updatecart(id, newData);
+  async function changeCount(id, newData) {
+    const res = await updatecart(id, newData);
     console.log("products", products);
+    res
+      ? toast.success("Product count Changed", {
+          duration: 3000,
+          position: "top-center",
+        })
+      : toast.error("Error, Try again Later", {
+          duration: 3000,
+          position: "top-center",
+        });
   }
   function startRemove(id) {
     removeItemFromCart(id);
@@ -21,6 +32,8 @@ export default function CartPage() {
   return (
     <>
       <section className="bg-white py-8 antialiased Minimum-height3 dark:bg-gray-900 md:py-16">
+        <CartStyle />
+
         <div className="mx-auto max-w-screen-xl px-4 2xl:px-0">
           <h2 className="text-xl font-semibold text-gray-900 dark:text-white sm:text-2xl">
             Shopping Cart

@@ -5,13 +5,24 @@ import Loadingpage from "./../Loadingpage/Loadingpage";
 import Error from "./../Error/Error";
 import axios from "axios";
 import { cartContext } from "./../../context/Cartprovider";
+import toast from "react-hot-toast";
+import CartStyle from "../Cartstyle/CartStyle";
 
 export default function ProductDetails() {
   const { id } = useParams();
   const { addProducttocart } = useContext(cartContext);
 
-  function handlingCart() {
-    addProducttocart(id);
+  async function handlingCart() {
+    const res = await addProducttocart(id);
+    res
+      ? toast.success("Product Added", {
+          duration: 3000,
+          position: "top-center",
+        })
+      : toast.error("Error, Try again Later", {
+          duration: 3000,
+          position: "top-center",
+        });
   }
 
   function getProductDetails() {
@@ -34,6 +45,8 @@ export default function ProductDetails() {
   return (
     <>
       <div className="flex items-center justify-center Minimum-height2 my-[80px]">
+        <CartStyle />
+
         <div className="max-w-7xl mx-auto bg-white shadow-lg rounded-lg overflow-hidden">
           <div className="flex flex-col items-center md:flex-row">
             <div className="md:w-1/3 p-4 relative">

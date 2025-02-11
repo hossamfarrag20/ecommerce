@@ -15,8 +15,8 @@ export default function Cartprovider({ children }) {
     setProducts(null), setTotalCartPrice(0), setCartId(null);
   }
 
-  function addProducttocart(id) {
-    axios
+  async function addProducttocart(id) {
+    const res = await axios
       .post(
         "https://ecommerce.routemisr.com/api/v1/cart",
         {
@@ -34,10 +34,13 @@ export default function Cartprovider({ children }) {
         // setTotalCartPrice(res.data.data.totalCartPrice);
         getUserCart();
         setCartId(res.data.cartId);
+        return true;
       })
       .catch((error) => {
         <Error />;
+        return false;
       });
+    return res;
   }
   function getUserCart() {
     axios
@@ -55,8 +58,8 @@ export default function Cartprovider({ children }) {
         <Error />;
       });
   }
-  function updatecart(id, newData) {
-    axios
+  async function updatecart(id, newData) {
+    const res = await axios
       .put(
         `https://ecommerce.routemisr.com/api/v1/cart/${id}`,
         {
@@ -68,10 +71,14 @@ export default function Cartprovider({ children }) {
         setnumOfCartItem(res.data.numOfCartItems);
         setProducts(res.data.data.products);
         setTotalCartPrice(res.data.data.totalCartPrice);
+
+        return true;
       })
       .catch((error) => {
         <Error />;
+        return false;
       });
+    return res;
   }
 
   function removeItemFromCart(id) {

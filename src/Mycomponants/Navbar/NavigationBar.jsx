@@ -1,22 +1,28 @@
-import React, { useContext } from "react";
-import { NavLink, useNavigate } from "react-router-dom";
-import { Navbar } from "flowbite-react";
+import React, { useContext, useState } from "react";
+import { Link, NavLink, useNavigate } from "react-router-dom";
 import { authContext } from "../../context/Authprovider";
 
 export default function NavigationBar() {
-  const { userToken, setuserToken } = useContext(authContext);
+  const { userToken, setUserToken } = useContext(authContext);
   const navigate = useNavigate();
-  function handelchange() {
+  const [isOpen, setIsOpen] = useState(false);
+
+  const toggleNavbar = () => {
+    setIsOpen(!isOpen);
+  };
+
+  function handleLogout() {
     localStorage.removeItem("Token");
-    setuserToken(null);
-    navigate("/login");
+    setUserToken(null);
+    // navigate("/login");
   }
+
   return (
-    <div className="px-5 py-2 dark:bg-gray-800">
-      <Navbar fluid rounded>
-        <Navbar.Brand
+    <nav className="bg-white dark:bg-gray-900 fixed w-full z-20 top-0 start-0 border-b border-gray-200 dark:border-gray-600">
+      <div className="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4">
+        <a
           href="https://flowbite.com/"
-          className="flex items-center space-x-3 rtl:space-x-reverse "
+          className="flex items-center space-x-3 rtl:space-x-reverse"
         >
           <img
             src="https://flowbite.com/docs/images/logo.svg"
@@ -26,71 +32,105 @@ export default function NavigationBar() {
           <span className="self-center text-2xl font-semibold whitespace-nowrap dark:text-white">
             Flowbite
           </span>
-        </Navbar.Brand>
+        </a>
 
-        <Navbar.Toggle className="cursor-pointer" />
-
-        <Navbar.Collapse>
+        <div className="flex md:order-2 items-center space-x-3 md:space-x-0 rtl:space-x-reverse">
           {userToken ? (
-            <div className="flex flex-col sm:flex-row  sm:gap-5">
-              <NavLink
-                to="/"
-                className="block py-2 px-3  text-white bg-blue-700 rounded-sm md:bg-transparent md:text-blue-700 md:p-0 dark:text-white md:dark:text-blue-500"
-              >
-                Home
-              </NavLink>
-              <NavLink
-                to="/products"
-                className="block py-2 px-3 text-gray-900 rounded-sm hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent"
-              >
-                Products
-              </NavLink>
-              <NavLink
-                to="/brands"
-                className="block py-2 px-3 text-gray-900 rounded-sm hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent"
-              >
-                Brands
-              </NavLink>
-              <NavLink
-                to="/categories"
-                className="block py-2 px-3 text-gray-900 rounded-sm hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent"
-              >
-                Categories
-              </NavLink>
-              <NavLink
-                to="/contact"
-                className="block py-2 px-3 text-gray-900 rounded-sm hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent"
-              >
-                Contact
-              </NavLink>
-              <div>
-              <span
-                onClick={handelchange}
-                className="block py-2 px-3 cursor-pointer text-white rounded-sm md:bg-transparent md:p-0 dark:text-white"
-              >
-                Logout
-              </span>
-            </div>
-            </div>
+            <button
+              type="button"
+              className="text-white focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 text-center dark:text-white cursor-pointer dark:hover:text-blue-700 dark:focus:ring-blue-800"
+              onClick={handleLogout}
+            >
+              Logout
+            </button>
           ) : (
-            <div className="flex flex-col sm:flex-row sm:gap-5">
-              <NavLink
-                to="/login"
-                className="block py-2 px-3  text-white bg-blue-700 rounded-sm md:bg-transparent md:text-blue-700 md:p-0 dark:text-white md:dark:text-blue-500"
+            <div className="flex flex-row font-medium">
+              <Link
+                to={"/login"}
+                className="block  text-gray-900 rounded-sm hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 md:p-0 md:dark:hover:text-blue-500 dark:text-white dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent"
               >
                 Log in
-              </NavLink>
-              <NavLink
-                to="/signup"
-                className="block py-2 px-3 text-gray-900 rounded-sm hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent"
+              </Link>
+              <span className="mx-2 text-gray-900 rounded-sm hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 md:p-0 md:dark:hover:text-blue-500 dark:text-white dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent">
+                /
+              </span>
+              <Link
+                to={"/signup"}
+                className="block  text-gray-900 rounded-sm hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 md:p-0 md:dark:hover:text-blue-500 dark:text-white dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent"
               >
-                Sign up
-              </NavLink>
+                Sign Up
+              </Link>
             </div>
           )}
 
-        </Navbar.Collapse>
-      </Navbar>
-    </div>
+          <button
+            onClick={toggleNavbar}
+            type="button"
+            className="inline-flex  cursor-pointer items-center p-2 w-10 h-10 justify-center text-sm text-gray-500 rounded-lg md:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600"
+            aria-controls="navbar-sticky"
+            aria-expanded={isOpen}
+          >
+            <span className="sr-only">Open main menu</span>
+            <svg
+              className="w-5 h-5"
+              aria-hidden="true"
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 17 14"
+            >
+              <path
+                stroke="currentColor"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth="2"
+                d="M1 1h15M1 7h15M1 13h15"
+              />
+            </svg>
+          </button>
+        </div>
+
+        <div
+          className={`items-center justify-between w-full md:flex md:w-auto md:order-1 ${
+            isOpen ? "" : "hidden"
+          }`}
+          id="navbar-sticky"
+        >
+          <ul className="flex flex-col p-4 md:p-0 mt-4 font-medium border border-gray-100 rounded-lg bg-gray-50 md:space-x-8 rtl:space-x-reverse md:flex-row md:mt-0 md:border-0 md:bg-white dark:bg-gray-800 md:dark:bg-gray-900 dark:border-gray-700">
+            <li>
+              <NavLink
+                to="/"
+                className="block py-2 px-3 text-white bg-blue-700 rounded-sm md:bg-transparent md:text-blue-700 md:p-0 md:dark:text-blue-500"
+              >
+                Home
+              </NavLink>
+            </li>
+            <li>
+              <NavLink
+                to="/about"
+                className="block py-2 px-3 text-gray-900 rounded-sm hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 md:p-0 md:dark:hover:text-blue-500 dark:text-white dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent"
+              >
+                About
+              </NavLink>
+            </li>
+            <li>
+              <NavLink
+                to="/services"
+                className="block py-2 px-3 text-gray-900 rounded-sm hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 md:p-0 md:dark:hover:text-blue-500 dark:text-white dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent"
+              >
+                Services
+              </NavLink>
+            </li>
+            <li>
+              <NavLink
+                to="/contact"
+                className="block py-2 px-3 text-gray-900 rounded-sm hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 md:p-0 md:dark:hover:text-blue-500 dark:text-white dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent"
+              >
+                Contact
+              </NavLink>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nav>
   );
 }

@@ -1,14 +1,12 @@
 import React, { useContext } from "react";
-import { Formik, useFormik } from "formik";
+import { useFormik } from "formik";
 import axios from "axios";
 import { authContext } from "../../context/Authprovider";
 import { useNavigate } from "react-router-dom";
 
 export default function Login() {
   const navigate = useNavigate();
-  const {setuserToken} = useContext(authContext);
-
-
+  const { setUserToken } = useContext(authContext);
 
   // ===================API DAta=================
   const apiDAta = {
@@ -16,19 +14,19 @@ export default function Login() {
     password: "",
   };
   // ===================Form Hadeler======================
-  async function login(values){
-    const {data} = await axios.post('https://ecommerce.routemisr.com/api/v1/auth/signin', values)
-    .then(function(data){
-      console.log(data.message);
-      console.log(data.data.token);
-      setuserToken(data.data.token);
-      localStorage.setItem('Token', data.data.token);
-      navigate('/');
-    })
-    .catch(function(error){
-        console.error(error.response?.data?.message || "An error occurred");
-    })
+async function login(values) {
+  try {
+    const { data } = await axios.post('https://ecommerce.routemisr.com/api/v1/auth/signin', values);
+    console.log(data.message);
+    console.log(data.token);
+    localStorage.setItem('Token', data.token);
+    setUserToken(data.token);
+    navigate('/');
+  } catch (error) {
+    console.error(error.response?.data?.message || "An error occurred");
   }
+}
+
   const registerformik = useFormik({
     initialValues: apiDAta,
     onSubmit: login,
@@ -50,29 +48,6 @@ export default function Login() {
     },
   });
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
   // ====================Ui data====================
   const inputs = [
     {
@@ -89,7 +64,7 @@ export default function Login() {
     },
   ];
   return (
-    <div className="contact-container Minimum-height flex flex-col justify-center bg-white dark:bg-gray-800 py-20">
+    <div className="contact-container min-h-screen flex flex-col justify-center bg-white dark:bg-gray-800 py-20">
       <div className="my-container pb-4">
         <div className="text-center">
           <h1 className="uppercase dark:text-white text-5xl font-bold">

@@ -1,10 +1,34 @@
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 import { useFormik } from "formik";
 import { cartContext } from "../../context/Cartprovider";
 import axios from "axios";
 
 export default function Ordering() {
   const { cartId, userToken, resetValues } = useContext(cartContext);
+  const [isChash, setIsCash] = useState(false);
+  function creatChashOut(values) {
+    axios
+      .post(
+        `https://ecommerce.routemisr.com/api/v1/orders/checkout-session/${cartId}`,
+        {
+          shippingAddress: {
+            details: values.details,
+            phone: values.phone,
+            city: values.city,
+          },
+        },
+        {
+          headers: { token: userToken },
+          params: {
+            url: "http://localhost:5173/ecommerce",
+          },
+        },
+      )
+      .then((res) => {
+        window.open(res.data.session.url, "_self");
+      })
+      .catch((error) => {});
+  }
 
   function creatCashOrder(values) {
     axios
@@ -37,7 +61,11 @@ export default function Ordering() {
       city: "",
     },
     onSubmit: (values) => {
-      creatCashOrder(values);
+      if (isChash) {
+        creatCashOrder(values);
+      } else {
+        creatChashOut(values);
+      }
     },
   });
 
@@ -65,7 +93,7 @@ export default function Ordering() {
                     <label className="font-bold text-lg text-white">
                       Details
                     </label>
-                    <input
+                    <input 
                       type="text"
                       name="details"
                       value={formik.values.details}
@@ -95,13 +123,20 @@ export default function Ordering() {
                       placeholder="Enter city"
                       className="border rounded-lg py-3 px-3 mt-4 bg-black border-indigo-600 placeholder-white-500 text-white"
                     />
-
-                    <button
-                      type="submit"
-                      className="border cursor-pointer hover:bg-indigo-600 border-indigo-600 bg-black text-white rounded-lg py-3 font-semibold"
-                    >
-                      Submit
-                    </button>
+                    <div className="flex items-center gap-4">
+                      <button onClick={() => setIsCash(true)}
+                        type="submit"
+                        className="border w-[70%] cursor-pointer hover:bg-indigo-600 border-indigo-600 bg-black text-white rounded-lg py-3 font-semibold"
+                      >
+                        Cash On Delivery
+                      </button>
+                      <button onClick={() => setIsCash(false)}
+                        type="submit"
+                        className="border cursor-pointer  grow  hover:bg-indigo-600 border-indigo-600 bg-black text-white rounded-lg py-3 font-semibold"
+                      >
+                        Pay
+                      </button>
+                    </div>
                   </form>
                 </div>
               </div>
