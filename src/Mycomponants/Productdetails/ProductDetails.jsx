@@ -12,11 +12,24 @@ import { authContext } from "../../context/Authprovider";
 
 export default function ProductDetails() {
   const { id } = useParams();
-  const { addProducttocart } = useContext(cartContext);
+  const { addProducttocart, setWishList, wishList, AddProductwishlist } =
+    useContext(cartContext);
   const { userToken } = useContext(authContext);
   const { wishlistData } = useContext(cartContext);
   async function handlingCart() {
     const res = await addProducttocart(id);
+    res
+      ? toast.success("Product Added", {
+          duration: 3000,
+          position: "top-center",
+        })
+      : toast.error("Error, Try again Later", {
+          duration: 3000,
+          position: "top-center",
+        });
+  }
+  async function handelWishlist(id) {
+    const res = await AddProductwishlist(id);
     res
       ? toast.success("Product Added", {
           duration: 3000,
@@ -35,7 +48,6 @@ export default function ProductDetails() {
   const { data, isError, isLoading } = useQuery({
     queryKey: ["getProductsdetails", id],
     queryFn: getProductDetails,
-    
   });
   if (isLoading) {
     return <Loadingpage />;
@@ -45,41 +57,16 @@ export default function ProductDetails() {
   }
 
   const Productsdetails = data?.data.data;
- //------------------- zaki---------------------------------------------------------------------
+  //------------------- zaki---------------------------------------------------------------------
 
-  const wishlistIds = new Set(wishlistData?.data.data.map((item) => item.id));
-
+  // const wishlistIds = new Set(wishlistData?.data.data.map((item) => item.id));
+  const wishlistIds = true;
   // if (wishlistIds?.has(Productsdetails.id)) {
   //   iswishlist = true;
   // } else {
   //   iswishlist = false;
   // }
 
-  function AddProductwishlist() {
-    axios
-      .post(
-        "https://ecommerce.routemisr.com/api/v1/wishlist",
-        {
-          productId: id,
-        },
-        {
-          headers: { token: userToken },
-        }
-      )
-      .then((res) => {
-        toast.success("Product Added to Wishlist", {
-          duration: 3000,
-          position: "top-center",
-        });
-      })
-      .catch((error) => {
-        toast.error("Error, Try again Later", {
-          duration: 3000,
-          position: "top-center",
-        });
-      });
-      // iswishlist = true;
-  }
   function DeleteProductwishlist() {
     axios
       .delete(
@@ -101,9 +88,11 @@ export default function ProductDetails() {
           position: "top-center",
         });
       });
-      // iswishlist = false;
+    // iswishlist = false;
   }
-// zaki---------------------------------------------------------------------
+  // zaki---------------------------------------------------------------------
+
+  // console.log(Productsdetails.id);
 
   return (
     <>
@@ -120,30 +109,33 @@ export default function ProductDetails() {
                   className="w-full h-auto object-cover rounded-lg"
                 />
                 {/* -----------zaki----------------------------------------- */}
-                {!wishlistIds?.has(Productsdetails.id) ? (
-                  <button
-                    onClick={() => {
-                      AddProductwishlist();
-                    }}
-                    className="absolute top-2 right-2 text-red-500 hover:text-red-600 focus:outline-none"
+                {/* {wishlistIds ( */}
+                <button
+                  onClick={() => {
+                    handelWishlist(Productsdetails.id);
+                  }}
+                  className={`absolute top-2 right-2 text-red-500 hover:text-red-600 focus:outline-none ${
+                    wishList ? "text-black-500" : ""
+                  }`}
+                >
+                  <svg
+                    className="w-6 h-6 absolute top-0 right-2"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                    xmlns="http://www.w3.org/2000/svg"
                   >
-                    <svg
-                      className="w-6 h-6 absolute top-0 right-2"
-                      fill="none"
-                      stroke="currentColor"
-                      viewBox="0 0 24 24"
-                      xmlns="http://www.w3.org/2000/svg"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth="2"
-                        d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"
-                      ></path>
-                    </svg>
-                  </button>
-                ) : (
-                  <button
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth="2"
+                      d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"
+                    ></path>
+                  </svg>
+                </button>
+
+                {/* // ) : ( */}
+                {/* <button
                     onClick={DeleteProductwishlist}
                     className="absolute  top-2 right-2 text-red-500 hover:text-red-600 focus:outline-none"
                   >
@@ -161,8 +153,8 @@ export default function ProductDetails() {
                         d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"
                       ></path>
                     </svg>
-                  </button>
-                )}
+                  </button> */}
+                {/* // )} */}
                 {/* ----------------------------------zaki ----------------------------------*/}
               </div>
             </div>
@@ -276,9 +268,12 @@ export default function ProductDetails() {
                   Productsdetails.priceAfterDiscount && (
                     <span className="bg-red-100 text-red-800 text-xs font-semibold px-2.5 py-0.5 rounded">
                       Sale :{" "}
-                      {((((Productsdetails.price -
-                        Productsdetails.priceAfterDiscount) /
-                        Productsdetails.price)* 100)).toFixed(2)}
+                      {(
+                        ((Productsdetails.price -
+                          Productsdetails.priceAfterDiscount) /
+                          Productsdetails.price) *
+                        100
+                      ).toFixed(2)}
                       %
                     </span>
                   )}

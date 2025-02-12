@@ -11,6 +11,7 @@ export default function Cartprovider({ children }) {
   const [products, setProducts] = useState(null);
   const [totalCartPrice, setTotalCartPrice] = useState(0);
   const [cartId, setCartId] = useState(null);
+  const [wishList, setWishList] = useState(false);
 
   function resetValues() {
     setProducts(null), setTotalCartPrice(0), setCartId(null);
@@ -102,25 +103,38 @@ export default function Cartprovider({ children }) {
     }
   }, [userToken]);
 
-// zaki---------------------------------------------------------------------
+  // zaki---------------------------------------------------------------------
+  async function AddProductwishlist(id) {
+    const res = await axios
+      .post(`https://ecommerce.routemisr.com/api/v1/wishlist`,{productId: id}, {
+        headers: { token: userToken },
+      })
+      .then((res) => {
+        // setWishList(true);
+        return true;
+      })
+      .catch((error) => {
+        return false;
+      });
 
-  function GetAllProductwishlist() {
-    return axios.get("https://ecommerce.routemisr.com/api/v1/wishlist", {
-      headers: { token: userToken },
-    });
-    
+    return res;
   }
+  // function GetAllProductwishlist() {
+  //   return axios.get("https://ecommerce.routemisr.com/api/v1/wishlist", {
+  //     headers: { token: userToken },
+  //   });
+  // }
 
-  const {
-    data: wishlistData,
-    isLoading: wishlistLoading,
-    isError: wishlistError,
-  } = useQuery({
-    queryKey: ["GetAllProductwishlist"],
-    queryFn: GetAllProductwishlist,
-    refetchInterval: 500,  
-  });
-// zaki---------------------------------------------------------------------
+  // const {
+  //   data: wishlistData,
+  //   isLoading: wishlistLoading,
+  //   isError: wishlistError,
+  // } = useQuery({
+  //   queryKey: ["GetAllProductwishlist"],
+  //   queryFn: GetAllProductwishlist,
+  //   refetchInterval: 500,
+  // });
+  // zaki---------------------------------------------------------------------
   return (
     <cartContext.Provider
       value={{
@@ -133,7 +147,10 @@ export default function Cartprovider({ children }) {
         cartId,
         userToken,
         resetValues,
-        wishlistData,
+        AddProductwishlist,
+        wishList,
+        setWishList,
+        // wishlistData,
       }}
     >
       {children}

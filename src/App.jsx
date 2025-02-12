@@ -23,6 +23,10 @@ import { Toaster } from "react-hot-toast";
 import { Offline } from "react-detect-offline";
 import MyModal from "./Mycomponants/Modal/Modal";
 import ModaProvider from "./context/Modalprovider";
+import Category from "./Mycomponants/Category/Category";
+import ProductsPage from "./Mycomponants/ProductsPage/ProductsPage";
+import Brands from "./Mycomponants/Brands/Brands";
+import WishlistPage from "./Mycomponants/WishLIstPage/WishlistPage";
 
 const router = createHashRouter([
   {
@@ -31,9 +35,9 @@ const router = createHashRouter([
     children: [
       { path: "*", element: <Error /> },
       { path: "", element: <Home /> },
-      { path: "products", element: <Error /> },
-      { path: "brands", element: <Error /> },
-      { path: "categories", element: <Error /> },
+      // { path: "products", element: <Error /> },
+      // { path: "brands", element: <Error /> },
+      { path: "category", element: <Category /> },
       {
         path: "signup",
         element: (
@@ -54,6 +58,9 @@ const router = createHashRouter([
       { path: "cart", element: <CartPage /> },
       { path: "order", element: <Ordering /> },
       { path: "modal", element: <MyModal /> },
+      { path: "products", element: <ProductsPage /> },
+      { path: "brands", element: <Brands /> },
+      { path: "wishlist", element: <WishlistPage /> },
     ],
   },
 ]);

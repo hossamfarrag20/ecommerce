@@ -10,6 +10,7 @@ import { cartContext } from "../../context/Cartprovider";
 import toast from "react-hot-toast";
 import MyModal from "../Modal/Modal";
 import CartStyle from "../Cartstyle/CartStyle";
+import useAllProducts from "../../customHooks/useAllProducts";
 
 export default function Home() {
   const { addProducttocart } = useContext(cartContext);
@@ -30,17 +31,19 @@ export default function Home() {
   //   params:{
   //     sort: 'category'
   //   }
-  function getAllProducts() {
-    return axios.get("https://ecommerce.routemisr.com/api/v1/products");
-  }
-  const { data, isError, isLoading } = useQuery({
-    queryKey: ["getallProducts"],
-    queryFn: getAllProducts,
-    refetchOnWindowFocus: false,
-    refetchInterval: 15 * 60 * 1000,
-    retry: 3,
-    staleTime: 10 * 60 * 1000,
-  });
+  // function getAllProducts() {
+  //   return axios.get("https://ecommerce.routemisr.com/api/v1/products");
+  // }
+  // const { data, isError, isLoading } = useQuery({
+  //   queryKey: ["getallProducts"],
+  //   queryFn: getAllProducts,
+  //   refetchOnWindowFocus: false,
+  //   refetchInterval: 15 * 60 * 1000,
+  //   retry: 3,
+  //   staleTime: 10 * 60 * 1000,
+  // });
+
+  const { data, isError, isLoading } = useAllProducts();
 
   if (isLoading) {
     return <Loadingpage />;
@@ -50,7 +53,7 @@ export default function Home() {
   }
   const allProducts = data?.data.data;
   return (
-    <div className="dark">
+    <div className="">
       <CartStyle />
       <div>
         <Sliding />
