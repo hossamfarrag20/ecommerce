@@ -1,5 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
-import React, { useContext } from "react";
+import React, { use, useContext, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import Loadingpage from "./../Loadingpage/Loadingpage";
 import Error from "./../Error/Error";
@@ -7,11 +7,14 @@ import axios from "axios";
 import { cartContext } from "./../../context/Cartprovider";
 import toast from "react-hot-toast";
 import CartStyle from "../Cartstyle/CartStyle";
+import { Button } from "flowbite-react";
+import { authContext } from "../../context/Authprovider";
 
 export default function ProductDetails() {
   const { id } = useParams();
   const { addProducttocart } = useContext(cartContext);
-
+  const { userToken } = useContext(authContext);
+  const { wishlistData } = useContext(cartContext);
   async function handlingCart() {
     const res = await addProducttocart(id);
     res
@@ -32,6 +35,7 @@ export default function ProductDetails() {
   const { data, isError, isLoading } = useQuery({
     queryKey: ["getProductsdetails", id],
     queryFn: getProductDetails,
+    
   });
   if (isLoading) {
     return <Loadingpage />;
@@ -41,6 +45,65 @@ export default function ProductDetails() {
   }
 
   const Productsdetails = data?.data.data;
+ //------------------- zaki---------------------------------------------------------------------
+
+  const wishlistIds = new Set(wishlistData?.data.data.map((item) => item.id));
+
+  // if (wishlistIds?.has(Productsdetails.id)) {
+  //   iswishlist = true;
+  // } else {
+  //   iswishlist = false;
+  // }
+
+  function AddProductwishlist() {
+    axios
+      .post(
+        "https://ecommerce.routemisr.com/api/v1/wishlist",
+        {
+          productId: id,
+        },
+        {
+          headers: { token: userToken },
+        }
+      )
+      .then((res) => {
+        toast.success("Product Added to Wishlist", {
+          duration: 3000,
+          position: "top-center",
+        });
+      })
+      .catch((error) => {
+        toast.error("Error, Try again Later", {
+          duration: 3000,
+          position: "top-center",
+        });
+      });
+      // iswishlist = true;
+  }
+  function DeleteProductwishlist() {
+    axios
+      .delete(
+        `https://ecommerce.routemisr.com/api/v1/wishlist/${id}`,
+
+        {
+          headers: { token: userToken },
+        }
+      )
+      .then((res) => {
+        toast.success("Product Deleted From Wishlist", {
+          duration: 3000,
+          position: "top-center",
+        });
+      })
+      .catch((error) => {
+        toast.error("Error, Try again Later", {
+          duration: 3000,
+          position: "top-center",
+        });
+      });
+      // iswishlist = false;
+  }
+// zaki---------------------------------------------------------------------
 
   return (
     <>
@@ -56,22 +119,51 @@ export default function ProductDetails() {
                   alt={Productsdetails.title}
                   className="w-full h-auto object-cover rounded-lg"
                 />
-                <button className="absolute top-2 right-2 text-red-500 hover:text-red-600 focus:outline-none">
-                  <svg
-                    className="w-6 h-6 absolute top-0 right-2"
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
-                    xmlns="http://www.w3.org/2000/svg"
+                {/* -----------zaki----------------------------------------- */}
+                {!wishlistIds?.has(Productsdetails.id) ? (
+                  <button
+                    onClick={() => {
+                      AddProductwishlist();
+                    }}
+                    className="absolute top-2 right-2 text-red-500 hover:text-red-600 focus:outline-none"
                   >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth="2"
-                      d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"
-                    ></path>
-                  </svg>
-                </button>
+                    <svg
+                      className="w-6 h-6 absolute top-0 right-2"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth="2"
+                        d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"
+                      ></path>
+                    </svg>
+                  </button>
+                ) : (
+                  <button
+                    onClick={DeleteProductwishlist}
+                    className="absolute  top-2 right-2 text-red-500 hover:text-red-600 focus:outline-none"
+                  >
+                    <svg
+                      className="w-6 fill-red-500 h-6 absolute top-0 right-2"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth="2"
+                        d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"
+                      ></path>
+                    </svg>
+                  </button>
+                )}
+                {/* ----------------------------------zaki ----------------------------------*/}
               </div>
             </div>
 
