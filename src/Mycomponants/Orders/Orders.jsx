@@ -48,7 +48,7 @@ console.log(data);
 
   return (
     <>
-      <section className="py-24 relative bg-white min-h-screen dark:bg-gray-800">
+      <section className="py-24 relative  bg-white min-h-screen dark:bg-gray-800">
         {userToken ? (
           <div className="w-full max-w-7xl mx-auto px-4 md:px-8">
             <h2 className="font-manrope font-extrabold text-3xl lead-10 text-black dark:text-white mb-9">
@@ -82,7 +82,7 @@ console.log(data);
                 {order?.cartItems.map((Orderdetails, index) => (
                   <div
                     key={index}
-                    className="flex py-2 max-lg:flex-col items-center gap-8 lg:gap-24 px-3 md:px-11"
+                    className="flex overflow-hidden py-2 max-lg:flex-col items-center gap-8 lg:gap-24 px-3 md:px-11"
                   >
                     <div className="grid grid-cols-4 w-full">
                       <div className="col-span-4 sm:col-span-1">

@@ -1,12 +1,14 @@
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 import { useFormik } from "formik";
 import axios from "axios";
 import { authContext } from "../../context/Authprovider";
 import { useNavigate } from "react-router-dom";
+import Loadingpage from "../Loadingpage/Loadingpage";
 
 export default function Login() {
   const navigate = useNavigate();
   const { setUserToken } = useContext(authContext);
+  const [isloading, setIsLoading] = useState(false);
 
   // ===================API DAta=================
   const apiDAta = {
@@ -14,18 +16,23 @@ export default function Login() {
     password: "",
   };
   // ===================Form Hadeler======================
-async function login(values) {
-  try {
-    const { data } = await axios.post('https://ecommerce.routemisr.com/api/v1/auth/signin', values);
-    console.log(data.message);
-    console.log(data.token);
-    localStorage.setItem('Token', data.token);
-    setUserToken(data.token);
-    navigate('/');
-  } catch (error) {
-    console.error(error.response?.data?.message || "An error occurred");
+  async function login(values) {
+    try {
+      setIsLoading(true);
+      const { data } = await axios.post(
+        "https://ecommerce.routemisr.com/api/v1/auth/signin",
+        values
+      );
+      console.log(data.message);
+      console.log(data.token);
+      localStorage.setItem("Token", data.token);
+      setUserToken(data.token);
+      setIsLoading(false);
+      navigate("/");
+    } catch (error) {
+      console.error(error.response?.data?.message || "An error occurred");
+    }
   }
-}
 
   const registerformik = useFormik({
     initialValues: apiDAta,
@@ -63,6 +70,10 @@ async function login(values) {
       type: "password",
     },
   ];
+
+  if (isloading) {
+    return <Loadingpage />;
+  }
   return (
     <div className="contact-container min-h-screen flex flex-col justify-center bg-white dark:bg-gray-800 py-20">
       <div className="my-container pb-4">

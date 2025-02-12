@@ -2,9 +2,12 @@ import React, { useState } from "react";
 import { Formik, useFormik } from "formik";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import Loadingpage from "../Loadingpage/Loadingpage";
 
 export default function Register() {
   const navigate = useNavigate();
+  const [isloading, setIsLoading] = useState(false);
+
   // ===================API DAta=================
   const apiDAta = {
     name: "",
@@ -17,11 +20,15 @@ export default function Register() {
 
   async function registering(values) {
     try {
-      const { data } = await axios.post("https://ecommerce.routemisr.com/api/v1/auth/signup", values);
-      
-      navigate("/login");      
+      setIsLoading(true);
+      const { data } = await axios.post(
+        "https://ecommerce.routemisr.com/api/v1/auth/signup",
+        values
+      );
+      setIsLoading(false);
+      navigate("/login");
     } catch (error) {
-      console.error(error.response?.data?.message || "An error occurred"); 
+      console.error(error.response?.data?.message || "An error occurred");
     }
   }
 
@@ -87,6 +94,9 @@ export default function Register() {
       type: "password",
     },
   ];
+  if (isloading) {
+    return <Loadingpage />;
+  }
   return (
     <div className="contact-container Minimum-height flex flex-col justify-center bg-white dark:bg-gray-800 py-20">
       <div className="my-container pb-4">

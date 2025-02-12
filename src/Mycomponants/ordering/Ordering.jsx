@@ -3,9 +3,13 @@ import { useFormik } from "formik";
 import { cartContext } from "../../context/Cartprovider";
 import axios from "axios";
 import mybackground from "../../assets/new.png";
+import { useNavigate } from "react-router-dom";
+import Loadingpage from "../Loadingpage/Loadingpage";
 export default function Ordering() {
   const { cartId, userToken, resetValues } = useContext(cartContext);
   const [isChash, setIsCash] = useState(false);
+  const navigate = useNavigate();
+  const [isloading, setIsLoading] = useState(false);
   function creatChashOut(values) {
     axios
       .post(
@@ -31,6 +35,7 @@ export default function Ordering() {
   }
 
   function creatCashOrder(values) {
+    setIsLoading(true);
     axios
       .post(
         `https://ecommerce.routemisr.com/api/v1/orders/${cartId}`,
@@ -48,6 +53,8 @@ export default function Ordering() {
       .then((res) => {
         resetValues();
         console.log("Order Created:", res.data);
+        setIsLoading(false);
+        navigate("/orders");
       })
       .catch((error) => {
         console.error("Error creating order:", error);
@@ -68,7 +75,9 @@ export default function Ordering() {
       }
     },
   });
-
+  if (isloading) {
+    return <Loadingpage />;
+  }
   return (
     <div
       style={{
