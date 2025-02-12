@@ -18,7 +18,7 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import ProductDetails from "./Mycomponants/Productdetails/ProductDetails";
 import Cartprovider from "./context/Cartprovider";
 import CartPage from "./Mycomponants/CartPage/CartPage";
-import Ordering from "./Mycomponants/ordering/ordering";
+import Ordering from "./Mycomponants/ordering/Ordering";
 import { Toaster } from "react-hot-toast";
 import { Offline } from "react-detect-offline";
 import MyModal from "./Mycomponants/Modal/Modal";

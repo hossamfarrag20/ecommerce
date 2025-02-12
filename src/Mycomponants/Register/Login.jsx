@@ -116,7 +116,7 @@ async function login(values) {
               </div>
               <div className="my-button mt-5 d-flex">
                 <button
-                  className="border-0 rounded-[10px] px-3 mb-5 py-2 dark:bg-white  dark:text-black text-white"
+                  className="border-0 cursor-pointer rounded-[10px] px-3 mb-5 py-2 dark:bg-white  dark:text-black text-white"
                   type="submit"
                 >
                   Send Message

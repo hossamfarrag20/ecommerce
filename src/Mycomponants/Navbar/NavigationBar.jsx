@@ -1,9 +1,11 @@
 import React, { useContext, useState } from "react";
-import { Link, NavLink } from "react-router-dom";
+import { Link, NavLink, useNavigate } from "react-router-dom";
 import { authContext } from "../../context/Authprovider";
 // import { FaCarCrash } from "react-icons/fa";
 // import freshcart from "../../assets/freshcart-logo.svg";
+
 export default function NavigationBar() {
+  const navigate = useNavigate();
   const { userToken, setUserToken } = useContext(authContext);
   const [isOpen, setIsOpen] = useState(false);
 
@@ -14,6 +16,7 @@ export default function NavigationBar() {
   function handleLogout() {
     localStorage.removeItem("Token");
     setUserToken(null);
+    navigate("/");
   }
 
   return (
