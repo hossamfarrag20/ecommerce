@@ -1,8 +1,10 @@
 import React, { useState } from "react";
 import { Formik, useFormik } from "formik";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 export default function Register() {
+  const navigate = useNavigate();
   // ===================API DAta=================
   const apiDAta = {
     name: "",
@@ -18,7 +20,7 @@ export default function Register() {
       const { data } = await axios.post("https://ecommerce.routemisr.com/api/v1/auth/signup", values);
       console.log(data.message);
       console.log(data);
-      
+      navigate("/login");      
     } catch (error) {
       console.error(error.response?.data?.message || "An error occurred"); 
     }

@@ -184,9 +184,9 @@ export default function ProductDetails() {
                   Productsdetails.priceAfterDiscount && (
                     <span className="bg-red-100 text-red-800 text-xs font-semibold px-2.5 py-0.5 rounded">
                       Sale :{" "}
-                      {(Productsdetails.price -
+                      {((((Productsdetails.price -
                         Productsdetails.priceAfterDiscount) /
-                        100}
+                        Productsdetails.price)* 100)).toFixed(2)}
                       %
                     </span>
                   )}
