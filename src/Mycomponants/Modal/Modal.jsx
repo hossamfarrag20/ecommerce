@@ -17,7 +17,7 @@ export default function MyModal() {
         size="md"
         onClose={() => setOpenModal(false)}
         popup
-        className="bg-[rgba(255,255,255,0.4)] z-0"
+        className="bg-[rgba(255,255,255,0.4)] z-50"
       >
         <Modal.Header />
         <Modal.Body>

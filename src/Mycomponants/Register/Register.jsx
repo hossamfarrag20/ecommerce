@@ -17,13 +17,14 @@ export default function Register() {
 
   async function registering(values) {
     try {
-      const { data } = await axios.post("https://ecommerce.routemisr.com/api/v1/auth/signup", values);
-      console.log(data.message);
-      console.log(data);
-      navigate("/login");      
+      const { data } = await axios.post(
+        "https://ecommerce.routemisr.com/api/v1/auth/signup",
+        values
+      );
     } catch (error) {
-      console.error(error.response?.data?.message || "An error occurred"); 
+      console.error(error.response?.data?.message || "An error occurred");
     }
+    navigate("/login");
   }
 
   const registerformik = useFormik({
@@ -93,7 +94,7 @@ export default function Register() {
       <div className="my-container pb-4">
         <div className="text-center">
           <h1 className="uppercase dark:text-white text-5xl font-bold">
-            Contact Section
+            Sign Up
           </h1>
         </div>
       </div>

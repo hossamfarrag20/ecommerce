@@ -68,7 +68,7 @@ async function login(values) {
       <div className="my-container pb-4">
         <div className="text-center">
           <h1 className="uppercase dark:text-white text-5xl font-bold">
-            Contact Section
+            Login
           </h1>
         </div>
       </div>
