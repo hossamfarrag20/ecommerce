@@ -27,6 +27,7 @@ import Category from "./Mycomponants/Category/Category";
 import ProductsPage from "./Mycomponants/ProductsPage/ProductsPage";
 import Brands from "./Mycomponants/Brands/Brands";
 import WishlistPage from "./Mycomponants/WishLIstPage/WishlistPage";
+import Orders from "./Mycomponants/Orders/Orders";
 
 const router = createHashRouter([
   {
@@ -61,6 +62,7 @@ const router = createHashRouter([
       { path: "products", element: <ProductsPage /> },
       { path: "brands", element: <Brands /> },
       { path: "wishlist", element: <WishlistPage /> },
+      { path: "Orders", element: <Orders /> },
     ],
   },
 ]);
