@@ -17,14 +17,12 @@ export default function Register() {
 
   async function registering(values) {
     try {
-      const { data } = await axios.post(
-        "https://ecommerce.routemisr.com/api/v1/auth/signup",
-        values
-      );
+      const { data } = await axios.post("https://ecommerce.routemisr.com/api/v1/auth/signup", values);
+      
+      navigate("/login");      
     } catch (error) {
-      console.error(error.response?.data?.message || "An error occurred");
+      console.error(error.response?.data?.message || "An error occurred"); 
     }
-    navigate("/login");
   }
 
   const registerformik = useFormik({
