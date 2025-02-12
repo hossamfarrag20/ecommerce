@@ -2,6 +2,7 @@ import axios from "axios";
 import React, { createContext, useContext, useEffect, useState } from "react";
 import { authContext } from "./Authprovider";
 import Error from "./../Mycomponants/Error/Error";
+import { useQuery } from "@tanstack/react-query";
 
 export const cartContext = createContext();
 export default function Cartprovider({ children }) {
@@ -48,7 +49,6 @@ export default function Cartprovider({ children }) {
         headers: { token: userToken },
       })
       .then((res) => {
-        console.log(res.data);
         setnumOfCartItem(res.data.numOfCartItems);
         setProducts(res.data.data.products);
         setTotalCartPrice(res.data.data.totalCartPrice);
@@ -102,6 +102,25 @@ export default function Cartprovider({ children }) {
     }
   }, [userToken]);
 
+// zaki---------------------------------------------------------------------
+
+  function GetAllProductwishlist() {
+    return axios.get("https://ecommerce.routemisr.com/api/v1/wishlist", {
+      headers: { token: userToken },
+    });
+    
+  }
+
+  const {
+    data: wishlistData,
+    isLoading: wishlistLoading,
+    isError: wishlistError,
+  } = useQuery({
+    queryKey: ["GetAllProductwishlist"],
+    queryFn: GetAllProductwishlist,
+    refetchInterval: 500,  
+  });
+// zaki---------------------------------------------------------------------
   return (
     <cartContext.Provider
       value={{
@@ -114,6 +133,7 @@ export default function Cartprovider({ children }) {
         cartId,
         userToken,
         resetValues,
+        wishlistData,
       }}
     >
       {children}

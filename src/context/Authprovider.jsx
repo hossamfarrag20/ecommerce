@@ -19,7 +19,6 @@ export default function AuthProvider({ children }) {
     if (userToken) {
       const res = jwtDecode(userToken);
       setUserData(res);
-      console.log("User data:", res);
     }
   }, [userToken]);
 
