@@ -12,15 +12,23 @@ import MyModal from "../Modal/Modal";
 import CartStyle from "../Cartstyle/CartStyle";
 import useAllProducts from "../../customHooks/useAllProducts";
 import useWishlist from "../../customHooks/useWishlist"; // Import the custom hook
+import { modalcontext } from "../../context/Modalprovider";
 
 export default function Home() {
-  const { addProducttocart, AddProductwishlist, DeleteProductwishlist } = useContext(cartContext);
+  const { addProducttocart, AddProductwishlist, DeleteProductwishlist } =
+    useContext(cartContext);
   const [isLoading, setIsLoading] = useState(false); // Loading state for wishlist operations
   const [isError, setIsError] = useState(false); // Error state for wishlist operations
   const [wishlistIds, setWishlistIds] = useState(new Set()); // Track wishlist product IDs
+  const { setOpenModal, setDescriptionMassege, setBtnContent } =
+    useContext(modalcontext);
 
   // Fetch all products
-  const { data, isError: isProductsError, isLoading: isProductsLoading } = useAllProducts();
+  const {
+    data,
+    isError: isProductsError,
+    isLoading: isProductsLoading,
+  } = useAllProducts();
 
   // Fetch wishlist data
   const { data: wishlistData, refetch: refetchWishlist } = useWishlist();
@@ -49,7 +57,11 @@ export default function Home() {
       });
     }
   };
-
+  function getTHeModal() {
+    setOpenModal(true);
+    setDescriptionMassege("Please Login First");
+    setBtnContent("Login");
+  }
   const toggleWishlist = async (productId) => {
     setIsLoading(true); // Start loading
     setIsError(false); // Reset error state
@@ -191,12 +203,21 @@ export default function Home() {
                     </div>
 
                     <div>
-                      <button
-                        onClick={() => handleAddToCart(product._id)}
-                        className="w-full block cursor-pointer bg-indigo-600 hover:bg-indigo-700 dark:bg-indigo-500 dark:hover:bg-indigo-600 text-white font-medium py-3 rounded-lg transition-colors"
-                      >
-                        Add to Cart
-                      </button>
+                      {localStorage.getItem("Token") ? (
+                        <button
+                          onClick={() => handleAddToCart(product._id)}
+                          className="w-full block cursor-pointer bg-indigo-600 hover:bg-indigo-700 dark:bg-indigo-500 dark:hover:bg-indigo-600 text-white font-medium py-3 rounded-lg transition-colors"
+                        >
+                          Add to Cart
+                        </button>
+                      ) : (
+                        <button
+                          onClick={getTHeModal}
+                          className="w-full block cursor-pointer bg-indigo-600 hover:bg-indigo-700 dark:bg-indigo-500 dark:hover:bg-indigo-600 text-white font-medium py-3 rounded-lg transition-colors"
+                        >
+                          Add to Cart
+                        </button>
+                      )}
                     </div>
                   </div>
                 </div>
