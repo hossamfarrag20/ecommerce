@@ -1,11 +1,10 @@
 import React, { useContext, useState } from "react";
-import { Link, NavLink, useNavigate } from "react-router-dom";
+import { Link, NavLink } from "react-router-dom";
 import { authContext } from "../../context/Authprovider";
-
-import freshcart from "../../assets/freshcart-logo.svg";
+// import { FaCarCrash } from "react-icons/fa";
+// import freshcart from "../../assets/freshcart-logo.svg";
 export default function NavigationBar() {
   const { userToken, setUserToken } = useContext(authContext);
-  const navigate = useNavigate();
   const [isOpen, setIsOpen] = useState(false);
 
   const toggleNavbar = () => {
@@ -15,22 +14,19 @@ export default function NavigationBar() {
   function handleLogout() {
     localStorage.removeItem("Token");
     setUserToken(null);
-    // navigate("/login");
   }
 
   return (
     <nav className="bg-white dark:bg-gray-900 fixed w-full z-20 top-0 start-0 dark:border-gray-600">
       <div className="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4">
+          <Link to={"/"}>          
         <div className="flex items-center gap-5">
-          <img
-            src={freshcart}
-            className="h-8"
-            alt="Flowbite Logo"
-          />
-          {/* <span className="self-center text-2xl font-semibold whitespace-nowrap dark:text-white">
-            Flowbite
-          </span> */}
+          <i class="fa-solid fa-car-burst text-4xl text dark:text-yellow-500"></i>
+          <span className="self-center text-2xl font-semibold whitespace-nowrap dark:text-gray-200">
+            WASALY
+          </span>
         </div>
+          </Link>
 
         <div className="flex md:order-2 items-center space-x-3 md:space-x-0 rtl:space-x-reverse">
           {userToken ? (
@@ -45,7 +41,7 @@ export default function NavigationBar() {
             <div className="flex flex-row font-medium">
               <Link
                 to={"/login"}
-                className="block  text-gray-900 rounded-sm hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 md:p-0 md:dark:hover:text-blue-500 dark:text-white dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent"
+                className="block text-gray-900 rounded-sm hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 md:p-0 md:dark:hover:text-blue-500 dark:text-white dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent"
               >
                 Log in
               </Link>
@@ -54,7 +50,7 @@ export default function NavigationBar() {
               </span>
               <Link
                 to={"/signup"}
-                className="block  text-gray-900 rounded-sm hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 md:p-0 md:dark:hover:text-blue-500 dark:text-white dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent"
+                className="block text-gray-900 rounded-sm hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 md:p-0 md:dark:hover:text-blue-500 dark:text-white dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent"
               >
                 Sign Up
               </Link>
@@ -64,7 +60,7 @@ export default function NavigationBar() {
           <button
             onClick={toggleNavbar}
             type="button"
-            className="inline-flex  cursor-pointer items-center p-2 w-10 h-10 justify-center text-sm text-gray-500 rounded-lg md:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600"
+            className="inline-flex cursor-pointer items-center p-2 w-10 h-10 justify-center text-sm text-gray-500 rounded-lg md:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600"
             aria-controls="navbar-sticky"
             aria-expanded={isOpen}
           >
@@ -97,7 +93,11 @@ export default function NavigationBar() {
             <li>
               <NavLink
                 to="/"
-                className="block py-2 px-3 text-white bg-blue-700 rounded-sm md:bg-transparent md:text-blue-700 md:p-0 md:dark:text-blue-500"
+                className={({ isActive }) =>
+                  isActive
+                    ? "block py-2 px-3 text-white bg-blue-700 rounded-sm md:bg-transparent md:text-blue-700 md:p-0 md:dark:text-yellow-500"
+                    : "block py-2 px-3 text-gray-900 rounded-sm hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 md:p-0 md:dark:hover:dark:text-yellow-500 dark:text-white dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent"
+                }
               >
                 Home
               </NavLink>
@@ -105,7 +105,11 @@ export default function NavigationBar() {
             <li>
               <NavLink
                 to="/products"
-                className="block py-2 px-3 text-gray-900 rounded-sm hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 md:p-0 md:dark:hover:text-blue-500 dark:text-white dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent"
+                className={({ isActive }) =>
+                  isActive
+                    ? "block py-2 px-3 text-white bg-blue-700 rounded-sm md:bg-transparent md:text-blue-700 md:p-0 md:dark:text-yellow-500"
+                    : "block py-2 px-3 text-gray-900 rounded-sm hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 md:p-0 md:dark:hover:dark:text-yellow-500 dark:text-white dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent"
+                }
               >
                 Products
               </NavLink>
@@ -113,7 +117,11 @@ export default function NavigationBar() {
             <li>
               <NavLink
                 to="/category"
-                className="block py-2 px-3 text-gray-900 rounded-sm hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 md:p-0 md:dark:hover:text-blue-500 dark:text-white dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent"
+                className={({ isActive }) =>
+                  isActive
+                    ? "block py-2 px-3 text-white bg-blue-700 rounded-sm md:bg-transparent md:text-blue-700 md:p-0 md:dark:text-yellow-500"
+                    : "block py-2 px-3 text-gray-900 rounded-sm hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 md:p-0 md:dark:hover:dark:text-yellow-500 dark:text-white dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent"
+                }
               >
                 Category
               </NavLink>
@@ -121,7 +129,11 @@ export default function NavigationBar() {
             <li>
               <NavLink
                 to="/wishlist"
-                className="block py-2 px-3 text-gray-900 rounded-sm hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 md:p-0 md:dark:hover:text-blue-500 dark:text-white dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent"
+                className={({ isActive }) =>
+                  isActive
+                    ? "block py-2 px-3 text-white bg-blue-700 rounded-sm md:bg-transparent md:text-blue-700 md:p-0 md:dark:text-yellow-500"
+                    : "block py-2 px-3 text-gray-900 rounded-sm hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 md:p-0 md:dark:hover:dark:text-yellow-500 dark:text-white dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent"
+                }
               >
                 WishList
               </NavLink>

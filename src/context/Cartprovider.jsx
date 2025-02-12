@@ -106,17 +106,45 @@ export default function Cartprovider({ children }) {
   // zaki---------------------------------------------------------------------
   async function AddProductwishlist(id) {
     const res = await axios
-      .post(`https://ecommerce.routemisr.com/api/v1/wishlist`,{productId: id}, {
-        headers: { token: userToken },
-      })
+      .post(
+        `https://ecommerce.routemisr.com/api/v1/wishlist`,
+        { productId: id },
+        {
+          headers: { token: userToken },
+        }
+      )
       .then((res) => {
-        // setWishList(true);
+        setWishList(true);
+        console.log(res);
+
         return true;
       })
       .catch((error) => {
         return false;
       });
+    return res;
+  }
 
+  async function DeleteProductwishlist(id) {
+    const res = await axios
+      .delete(
+        `https://ecommerce.routemisr.com/api/v1/wishlist/${id}`,
+
+        {
+          headers: { token: userToken },
+        }
+      )
+      .then((res) => {
+        setWishList(false);
+        console.log(res);
+
+        return true;
+      })
+      .catch((error) => {
+        console.log(res);
+
+        return false;
+      });
     return res;
   }
   // function GetAllProductwishlist() {
@@ -150,6 +178,7 @@ export default function Cartprovider({ children }) {
         AddProductwishlist,
         wishList,
         setWishList,
+        DeleteProductwishlist,
         // wishlistData,
       }}
     >
